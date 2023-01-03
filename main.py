@@ -1087,7 +1087,9 @@ if __name__ == "__main__":
     if full_scrape == 'full':
         confirm = input('Warning! A full scrape will take ~4 hours. Are you sure? (yes/no)')
         if confirm == 'yes':
-            Scrape.links(date)
+            print('Scraping links...')
+            failed_urls_links = Scrape.links(date)
+            print('Scraping other info...')
             Scrape.other_info()
         else:
             pass
@@ -1106,9 +1108,6 @@ if __name__ == "__main__":
     for pklpath in ['./pkl/'+date+'/dict_name_urls.pkl','./pkl/'+date+'/dict_mpfi.pkl','./pkl/'+date+'/dict_parsed_lines.pkl']:
         if os.path.isfile(pklpath): os.remove(pklpath)
         else: pass
-
-    print('Scraping links...')
-    failed_urls_links = Scrape.links(date)
 
     # print('Scraping MPFI...')
     failed_urls_mpfi = Scrape.mpfi()

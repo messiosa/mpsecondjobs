@@ -1,49 +1,31 @@
-import datetime
-import pandas as pd
-from dash import Dash, dash_table, html, dcc, Input, Output
+import dash
+from dash import Dash, html, dcc
+import dash_bootstrap_components as dbc
 
-df_mp_overview_mega = pd.read_pickle('df_mp_overview_mega.pkl')
-df_second_jobs_mega = pd.read_pickle('df_second_jobs_mega.pkl')
+app = Dash(__name__, use_pages=True)
 
-app = Dash(__name__)
-server = app.server
-
-unique_register_dates = sorted([i for i in df_mp_overview_mega['Register date'].unique().tolist()], reverse=True)
-unique_register_dates.append('All')
+navbar = html.Div([
+        html.Span('MP Second Jobs', className='navbar-title', style={'margin':'0 50px 0 0','color':'white','fontSize':20}),
+        dcc.Link('MP Overview', href='/', className='navbar-link', style={'margin':'0 30px 0 0','color':'white','fontSize':16}),
+        html.Span('/', className='navbar-title', style={'margin':'0 30px 0 0','color':'white','fontSize':20}),
+        dcc.Link('Jobs breakdown', href='/jobs_breakdown', className='navbar-link', style={'margin':'0 30px 0 0','color':'white','fontSize':16}),
+        html.Span('/', className='navbar-title', style={'margin':'0 30px 0 0','color':'white','fontSize':20}),
+        dcc.Link('About', href='/about', className='navbar-link', style={'margin':'0 30px 0 0','color':'white','fontSize':16})], 
+    style = {
+        'fontFamily':'Arial',
+        'fontWeight':'bold',
+        'display':'flex',
+        'justifyContent':'flex-start',
+        'alignItems':'center',
+        'backgroundColor': '#383838',
+        'padding':'10px'},
+    className='navbar')
 
 app.layout = html.Div([
-    html.H2('MP Second Jobs'),
-
-    dcc.Dropdown(
-        unique_register_dates,
-        'All',
-        searchable=True,
-        id="my-dropdown"),
-    html.Br(),
-
-    dash_table.DataTable(
-        data=df_mp_overview_mega.to_dict('records'),
-        columns=[
-            {"name": i, "id": i} for i in df_mp_overview_mega.columns
-        ],
-
-        style_cell ={'textAlign':'left'},
-        sort_action="native",
-        filter_action="native",
-        id="my-table"
-    )
+    navbar,
+	dash.page_container,
+    html.Link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet'),
 ])
 
-@app.callback(
-    Output('my-table','data'),
-    Input('my-dropdown','value')
-)
-def update_rows(selected_value):
-    if selected_value == 'All':
-        dff = df_mp_overview_mega
-    else:
-        dff = df_mp_overview_mega[df_mp_overview_mega['Register date'] == datetime.datetime.strptime(selected_value,'%Y-%m-%d').date()]
-    return dff.to_dict('records')
-
 if __name__ == '__main__':
-    app.run_server(debug=False)
+	app.run_server(debug=True)

@@ -23,8 +23,7 @@ navbar = html.Div([
 
 app.layout = html.Div([
     navbar,
-	dash.page_container,
-    html.Link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet'),
+	dash.page_container
 ])
 
 if __name__ == '__main__':

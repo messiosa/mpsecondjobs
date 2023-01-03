@@ -18,11 +18,11 @@ layout = html.Div([
     dcc.Markdown('''
     ### Jobs breakdown
 
-    ...
-
-    **Notes to reader:**
     - Each line represents an entry into the Register.
     - Empty MP entries have been removed.
+    - Follow the **Source** link to read the original Register entry on [parliament.uk](https://www.parliament.uk/).
+
+    ---
 
     **Last updated: [12 December 2022](https://publications.parliament.uk/pa/cm/cmregmem/221212/contents.htm)**
     ''',

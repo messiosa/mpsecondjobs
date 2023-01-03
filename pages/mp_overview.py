@@ -16,17 +16,25 @@ layout = html.Div([
     dcc.Markdown('''
     ### Welcome to MP Second Jobs! 
     
-    This resource will give you a snapshot of **how UK MPs earn cash on the side**.
+    ***Do you want to know about the extra income earned by UK MPs and the hours they spend working outside of Parliament?***
+
+    While this information (and more) is publicly available in [The Register of Members' Financial Interests](https://www.parliament.uk/mps-lords-and-offices/standards-and-financial-interests/parliamentary-commissioner-for-standards/registers-of-interests/register-of-members-financial-interests/), it can be difficult to find and understand. That's why [MP Second Jobs](https://MPSecondJobs.uk) was created - to make this rich democratic resource more accessible and insightful to members of the public, journalists, and researchers.
+
+    ---
+
+    ***Navigating the site***
     
-    While this information is freely available in the [Register of Members' Financial Interests](https://www.parliament.uk/mps-lords-and-offices/standards-and-financial-interests/parliamentary-commissioner-for-standards/registers-of-interests/register-of-members-financial-interests/), this project was created to make this information accessible and insightful for members of the public, journalists, and researchers. For more information about the codebase and methodology, see the [About](/about) page.
-    
-    - Below, you'll find a summary of **total earnings** and **total hours worked** year-to-date (YTD) for each current MP. You can also **filter** columns to narrow down the data.
-    
-    - A new version of the Register is generally released every two weeks. In the **dropdown menu** below, you can choose to view Register entries for **all dates** or for a **specific date** *(YTD values are calculated from the Register date specified)*.
+    - On this page, you'll find a summary of **total earnings** and **total hours worked** year-to-date (YTD) for each current MP. You can also **filter** columns to narrow down the data (e.g., to a particular region or political party).
     
     - On the [Jobs breakdown](/jobs_breakdown) page, you'll find a more detailed breakdown of the earnings summarised here - including who MPs are working for and what they're doing.
 
-    **Last updated: [12 December 2022](https://publications.parliament.uk/pa/cm/cmregmem/221212/contents.htm)**
+    - A new version of the Register is generally released every two weeks. In the **dropdown menu** above the tables, you can choose to view Register entries for **all dates** or for a **specific date** (YTD values are calculated from the Register date specified).
+
+    - For more information about the codebase and methodology, see the [About](/about) page.
+
+    ---
+
+    ***Last updated: [12 December 2022](https://publications.parliament.uk/pa/cm/cmregmem/221212/contents.htm)***
     ''',
     style = {'fontFamily':'Arial','fontSize':14}),
 

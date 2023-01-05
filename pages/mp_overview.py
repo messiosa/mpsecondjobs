@@ -18,7 +18,7 @@ layout = html.Div([
     
     ***Do you want to know about the extra income earned by UK MPs and the hours they spend working outside of Parliament?***
 
-    While this information (and more) is publicly available in [The Register of Members' Financial Interests](https://www.parliament.uk/mps-lords-and-offices/standards-and-financial-interests/parliamentary-commissioner-for-standards/registers-of-interests/register-of-members-financial-interests/), it can be difficult to find and understand. That's why [MP Second Jobs](https://MPSecondJobs.uk) was created - to make this rich democratic resource more accessible and insightful to members of the public, journalists, and researchers.
+    While this information (and more) is publicly available in [The Register of Members' Financial Interests](https://www.parliament.uk/mps-lords-and-offices/standards-and-financial-interests/parliamentary-commissioner-for-standards/registers-of-interests/register-of-members-financial-interests/), it can be difficult to find and understand. That's why [MP Second Jobs](https://MPSecondJobs.uk) was created - to make this important democratic resource more accessible and insightful to members of the public, journalists, and researchers.
 
     ---
 

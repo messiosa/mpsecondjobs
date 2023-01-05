@@ -24,5 +24,5 @@ date_list = [
 ]
 
 if __name__ == "__main__":
-    for date, date_words in date_list:
-        subprocess.run('python3 main.py '+date+' '+date_words)
+    for (date, date_words) in date_list:
+        subprocess.run('python3 main.py "'+date+'" "'+date_words+'"')

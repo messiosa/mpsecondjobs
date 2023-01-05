@@ -24,6 +24,7 @@ class Config:
     selenium_path = r"C:/selenium_drivers/edgedriver_win64_108"
     selenium_options = Options()
     selenium_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36 Edg/101.0.1210.32")
+    selenium_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
     categories_dict = {
         'c1': '1. Employment and earnings',
@@ -310,7 +311,6 @@ class Scrape:
 
                 ppurl = dict_name_urls[mpurl]['ppurl']
                 party, constituency, region, country = scrape_pp(ppurl)
-                print('pp_info:',party, constituency, region, country)
 
                 dict_indv_mp = {
                     'name': dict_name_urls[mpurl]['name'],
@@ -339,7 +339,6 @@ class Scrape:
                     try:
                         dict_other_info = pickle.load(open('./pkl/'+date+'/dict_other_info.pkl','rb'))
                         dict_other_info[mpurl] = get_indv_dict(mpurl) # not very efficient to open/close but this allows for doing this scrape in bursts as it takes a long time (~3-4 hours)
-                        print('\n',mpurl,dict_other_info[mpurl])
 
                         dict_other_info_file = open('./pkl/'+date+'/dict_other_info.pkl', 'wb')
                         pickle.dump(dict_other_info, dict_other_info_file)
@@ -392,7 +391,6 @@ class Scrape:
                 dict_other_info = pickle.load(open('./pkl/'+date+'/dict_other_info.pkl','rb'))
                 try:
                     dict_other_info[mpurl] = get_indv_dict(mpurl)
-                    print(dict_other_info[mpurl])
                 except Exception as e:
                     #print('get_indv_mp failed:',e)
                     pass
@@ -1070,7 +1068,6 @@ if __name__ == "__main__":
     print('loading dates...')
     date = sys.argv[1]
     date_words = sys.argv[2]
-    full_scrape = sys.argv[3]
     print('date: ',date,' / date_words: ',date_words)
     election_date = '191212'
     election_date_words = '12 December 19'
@@ -1084,17 +1081,10 @@ if __name__ == "__main__":
         os.mkdir('./pkl/'+date)
 
     # Full scrape (i.e., run Scrape.other_info() too?)
-    if full_scrape == 'full':
-        confirm = input('Warning! A full scrape will take ~4 hours. Are you sure? (yes/no)')
-        if confirm == 'yes':
-            print('Scraping links...')
-            failed_urls_links = Scrape.links(date)
-            print('Scraping other info...')
-            Scrape.other_info()
-        else:
-            pass
-    else:
-        pass
+    print('Scraping links...')
+    failed_urls_links = Scrape.links(date)
+    print('Scraping other info...')
+    Scrape.other_info()
 
     # spaCy models
     print('loading spaCy models...')
@@ -1102,12 +1092,6 @@ if __name__ == "__main__":
     nlp_time = spacy.load('./ner_models/time/model-best/')
     nlp_money = spacy.load("./ner_models/money/model-best")
     nlp_all_ents = spacy.load("./ner_models/all_ents/model-best")
-
-    # delete old dicts
-    print('removing old dicts...')
-    for pklpath in ['./pkl/'+date+'/dict_name_urls.pkl','./pkl/'+date+'/dict_mpfi.pkl','./pkl/'+date+'/dict_parsed_lines.pkl']:
-        if os.path.isfile(pklpath): os.remove(pklpath)
-        else: pass
 
     # print('Scraping MPFI...')
     failed_urls_mpfi = Scrape.mpfi()

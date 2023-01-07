@@ -1,5 +1,5 @@
 import dash
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
 
 app = Dash(__name__, use_pages=True)
@@ -11,7 +11,9 @@ navbar = html.Div([
         html.Span('/', className='navbar-title', style={'margin':'0 30px 0 0','color':'white','fontSize':20}),
         dcc.Link('Jobs breakdown', href='/jobs_breakdown', className='navbar-link', style={'margin':'0 30px 0 0','color':'white','fontSize':16}),
         html.Span('/', className='navbar-title', style={'margin':'0 30px 0 0','color':'white','fontSize':20}),
-        dcc.Link('About', href='/about', className='navbar-link', style={'margin':'0 30px 0 0','color':'white','fontSize':16})], 
+        dcc.Link('About', href='/about', className='navbar-link', style={'margin':'0 30px 0 0','color':'white','fontSize':16}),
+        ],
+
     style = {
         'fontFamily':'Arial',
         'fontWeight':'bold',

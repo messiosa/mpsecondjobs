@@ -6,6 +6,7 @@ mps_data2.code-workspace
 excel/
 ner_models/
 pkl/
+ssl_cert/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

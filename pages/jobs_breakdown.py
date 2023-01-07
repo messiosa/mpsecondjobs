@@ -4,7 +4,7 @@ import dash
 from dash import Dash, dash_table, html, dcc, Input, Output, callback
 from dash.dash_table.Format import Format, Symbol, Trim, Scheme, Group
 
-dash.register_page(__name__,path='/jobs_breakdown',name='Jobs breakdown')
+dash.register_page(__name__,path='/jobs_breakdown',name='Jobs breakdown', title="MP Second Jobs / Jobs breakdown")
 
 df_second_jobs_mega= pd.read_pickle('df_second_jobs_mega.pkl')
 df_second_jobs_mega['Source'] = df_second_jobs_mega['Source'].apply(lambda url: f'[{url}]({url})')
@@ -27,6 +27,12 @@ layout = html.Div([
     **Last updated: [12 December 2022](https://publications.parliament.uk/pa/cm/cmregmem/221212/contents.htm)**
     ''',
     style = {'fontFamily':'Arial','fontSize':14}),
+
+    html.Div([
+        html.Button("Download data (.csv)", id="btn_csv2"),
+        dcc.Download(id="download-dataframe-csv2")
+    ]),
+    html.Br(),
 
     dcc.Dropdown(
         unique_register_dates,
@@ -128,3 +134,11 @@ def update_rows(selected_value):
     else:
         dff = filtered_data[filtered_data['Register date'] == datetime.datetime.strptime(selected_value,"%d %B %Y").date()].sort_values('Name',ascending=True)
     return dff.to_dict('records')
+
+@callback(
+    Output("download-dataframe-csv2", "data"),
+    Input("btn_csv2", "n_clicks"),
+    prevent_initial_call=True,
+)
+def func(n_clicks):
+    return dcc.send_data_frame(filtered_data.to_csv, "mp_jobs_data_allyears.csv")

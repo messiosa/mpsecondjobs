@@ -1,8 +1,7 @@
 import datetime, os
 import pandas as pd
 import dash
-from dash import Dash, dash_table, html, dcc, Input, Output, callback
-from dash.dash_table.Format import Format, Symbol, Trim, Scheme, Group
+from dash import dash_table, html, dcc, Input, Output, callback
 
 dash.register_page(__name__,path='/jobs_breakdown',name='Jobs breakdown', title="MP Second Jobs / Jobs breakdown")
 
@@ -14,7 +13,9 @@ df_second_jobs = pd.read_pickle('df_second_jobs.pkl')
 df_second_jobs['Source'] = df_second_jobs['Source'].apply(lambda url: f'[{url}]({url})')
 filtered_data = df_second_jobs.dropna(subset=['Client/Organisation'])
 
-date = sorted([i for i in os.listdir('./pkl') if i != 'dict_constituencies.pkl'],reverse=True)[0]
+# Get date and date_words
+with open('latest_scrape_date.txt','r') as f:
+    date = f.read()
 date_words = datetime.datetime.strftime(datetime.datetime.strptime(date,'%y%m%d'),'%d %B %Y')
 
 layout = html.Div([

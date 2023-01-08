@@ -9,7 +9,9 @@ dash.register_page(__name__, path='/', name='MP Overview', title="MP Second Jobs
 df_mp_overview = pd.read_pickle('df_mp_overview.pkl')
 df_mp_overview_mega = pd.read_pickle('df_mp_overview_mega.pkl')
 
-date = sorted([i for i in os.listdir('./pkl') if i != 'dict_constituencies.pkl'],reverse=True)[0]
+# Get date and date_words
+with open('latest_scrape_date.txt','r') as f:
+    date = f.read()
 date_words = datetime.datetime.strftime(datetime.datetime.strptime(date,'%y%m%d'),'%d %B %Y')
 
 layout = html.Div([
@@ -28,7 +30,7 @@ layout = html.Div([
     
     - On the [Jobs breakdown](/jobs_breakdown) page, you'll find a more detailed breakdown of the earnings summarised here - including who MPs are working for and what they're doing.
 
-    - A new version of the Register is generally released every two weeks. The data below is for the most recent update to the Register - but you can download **historic data** using the Download button below.
+    - A new version of the Register is generally released every two weeks. The data below is for the most recent update to the Register - but you can download **historic data** using the **Download** button below.
 
     - For more information about the codebase and methodology, see the [About](/about) page.
 

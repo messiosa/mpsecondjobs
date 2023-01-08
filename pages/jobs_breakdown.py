@@ -12,7 +12,7 @@ filtered_data_mega = df_second_jobs_mega.dropna(subset=['Client/Organisation'])
 df_second_jobs = pd.read_pickle('df_second_jobs.pkl')
 df_second_jobs['Source'] = df_second_jobs['Source'].apply(lambda url: f'[{url}]({url})')
 filtered_data = df_second_jobs.dropna(subset=['Client/Organisation'])
-
+filtered_data.iloc[2].to_dict()
 # Get date and date_words
 with open('latest_scrape_date.txt','r') as f:
     date = f.read()
@@ -33,7 +33,7 @@ layout = html.Div([
     style = {'fontFamily':'Arial','fontSize':14}),
 
     html.Div([
-        html.Button("Download historic data (.csv)", id="btn_csv2"),
+        html.Button("Download historical data (.csv)", id="btn_csv2"),
         dcc.Download(id="download-dataframe-csv2")
     ]),
     html.Br(),

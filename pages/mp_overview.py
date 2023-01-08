@@ -4,7 +4,7 @@ import dash
 from dash import dash_table, html, dcc, Input, Output, callback
 from dash.dash_table.Format import Format, Symbol, Trim, Scheme, Group
 
-dash.register_page(__name__, path='/', name='MP Overview', title="MP Second Jobs / Overview")
+dash.register_page(__name__, path='/', name='Summary', title="MP Second Jobs / Summary")
 
 df_mp_overview = pd.read_pickle('df_mp_overview.pkl')
 df_mp_overview_mega = pd.read_pickle('df_mp_overview_mega.pkl')
@@ -20,7 +20,7 @@ layout = html.Div([
     
     **Do you want to know about the extra income earned by UK MPs and the hours they spend working outside of Parliament?**
 
-    While this information (and more) is publicly available in the [Register of Members' Financial Interests](https://www.parliament.uk/mps-lords-and-offices/standards-and-financial-interests/parliamentary-commissioner-for-standards/registers-of-interests/register-of-members-financial-interests/), it can be difficult to find and understand. That's why [MP Second Jobs was created - to make this important democratic resource more accessible and insightful to members of the public, journalists, and researchers.
+    While this information (and more) is publicly available in the [Register of Members' Financial Interests](https://www.parliament.uk/mps-lords-and-offices/standards-and-financial-interests/parliamentary-commissioner-for-standards/registers-of-interests/register-of-members-financial-interests/), it can be difficult to find and understand. That's why MP Second Jobs was created - to make this important democratic resource more accessible and insightful to members of the public, journalists, and researchers.
 
     ---
 
@@ -28,7 +28,7 @@ layout = html.Div([
     
     - On this page, you'll find a summary of **total earnings** and **total hours worked** year-to-date (YTD) for each current MP. You can also **filter** columns to narrow down the data (e.g., to a particular region or political party).
     
-    - On the [Jobs breakdown](/jobs_breakdown) page, you'll find a more detailed breakdown of the earnings summarised here - including who MPs are working for and what they're doing.
+    - On the [Jobs](/jobs) page, you'll find a more detailed breakdown of the earnings summarised here - including who MPs are working for and what they're doing.
 
     - A new version of the Register is generally released every two weeks. The data below is for the most recent update to the Register - but you can download **historic data** using the **Download** button below.
 

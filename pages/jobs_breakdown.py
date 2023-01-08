@@ -1,7 +1,7 @@
 import datetime, os
 import pandas as pd
 import dash
-from dash import dash_table, html, dcc, Input, Output, callback
+from dash import Dash, dash_table, html, dcc, Input, Output, callback
 from dash.dash_table.Format import Format, Symbol, Trim, Scheme, Group
 
 dash.register_page(__name__,path='/jobs_breakdown',name='Jobs breakdown', title="MP Second Jobs / Jobs breakdown")

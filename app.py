@@ -1,17 +1,16 @@
 import dash
-from dash import Dash, html, dcc, Input, Output
-import dash_bootstrap_components as dbc
+from dash import Dash, html, dcc
 
 app = Dash(__name__, use_pages=True)
 server = app.server
 
 navbar = html.Div([
-        html.Span('MP Second Jobs', className='navbar-title', style={'margin':'0 50px 0 0','color':'white','fontSize':20}),
-        dcc.Link('MP Overview', href='/', className='navbar-link', style={'margin':'0 30px 0 0','color':'white','fontSize':16}),
-        html.Span('/', className='navbar-title', style={'margin':'0 30px 0 0','color':'white','fontSize':20}),
-        dcc.Link('Jobs breakdown', href='/jobs_breakdown', className='navbar-link', style={'margin':'0 30px 0 0','color':'white','fontSize':16}),
-        html.Span('/', className='navbar-title', style={'margin':'0 30px 0 0','color':'white','fontSize':20}),
-        dcc.Link('About', href='/about', className='navbar-link', style={'margin':'0 30px 0 0','color':'white','fontSize':16}),
+        html.Span('MP Second Jobs', className='navbar-title', style={'margin':'0 30px 0 0','color':'white','fontSize':20}),
+        dcc.Link('Summary', href='/', className='navbar-link', style={'margin':'0 15px 0 0','color':'white','fontSize':16}),
+        html.Span('/', className='navbar-title', style={'margin':'0 15px 0 0','color':'white','fontSize':20}),
+        dcc.Link('Jobs', href='/jobs', className='navbar-link', style={'margin':'0 15px 0 0','color':'white','fontSize':16}),
+        html.Span('/', className='navbar-title', style={'margin':'0 15px 0 0','color':'white','fontSize':20}),
+        dcc.Link('About', href='/about', className='navbar-link', style={'margin':'0 15px 0 0','color':'white','fontSize':16}),
         ],
 
     style = {

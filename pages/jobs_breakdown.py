@@ -3,7 +3,7 @@ import pandas as pd
 import dash
 from dash import dash_table, html, dcc, Input, Output, callback
 
-dash.register_page(__name__,path='/jobs_breakdown',name='Jobs breakdown', title="MP Second Jobs / Jobs breakdown")
+dash.register_page(__name__,path='/jobs',name='Jobs', title="MP Second Jobs / Jobs")
 
 df_second_jobs_mega= pd.read_pickle('df_second_jobs_mega.pkl')
 df_second_jobs_mega['Source'] = df_second_jobs_mega['Source'].apply(lambda url: f'[{url}]({url})')

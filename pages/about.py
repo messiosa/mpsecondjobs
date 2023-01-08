@@ -10,10 +10,20 @@ layout = html.Div([
         - For the full codebase, training data, and methodology, please visit the [GitHub](https://github.com/messiosa/mpsecondjobs).
 
         - To learn more about the Register, go to [this](https://publications.parliament.uk/pa/cm201719/cmcode/1882/188204.htm#_idTextAnchor017) page.
-        
+
         - To get in touch, contact me using [Linktree](https://linktr.ee/andrewkm) or at [andrew.messios@gmail.com](mailto:andrew.messios@gmail.com).
     ''',
     style={
         'fontFamily':'Arial',
-        'fontSize':14})
+        'fontSize':14}),
+    
+    html.Br(),
+    html.Img(
+        src='assets/bmc_qr.png',
+        style={
+            'height':'200px',
+            'width':'200px',
+            'margin':'0 auto',
+            'display':'block'
+        })
 ])

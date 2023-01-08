@@ -1,18 +1,21 @@
-import datetime
+import datetime, os
 import pandas as pd
 import dash
-from dash import Dash, dash_table, html, dcc, Input, Output, callback
+from dash import dash_table, html, dcc, Input, Output, callback
 from dash.dash_table.Format import Format, Symbol, Trim, Scheme, Group
 
 dash.register_page(__name__,path='/jobs_breakdown',name='Jobs breakdown', title="MP Second Jobs / Jobs breakdown")
 
 df_second_jobs_mega= pd.read_pickle('df_second_jobs_mega.pkl')
 df_second_jobs_mega['Source'] = df_second_jobs_mega['Source'].apply(lambda url: f'[{url}]({url})')
-filtered_data = df_second_jobs_mega.dropna(subset=['Client/Organisation'])
+filtered_data_mega = df_second_jobs_mega.dropna(subset=['Client/Organisation'])
 
-unique_register_dates = sorted([i for i in df_second_jobs_mega['Register date'].unique().tolist()], reverse=True)
-unique_register_dates = [datetime.datetime.strftime(i,'%d %B %Y') for i in unique_register_dates]
-unique_register_dates.insert(0,'All dates')
+df_second_jobs = pd.read_pickle('df_second_jobs.pkl')
+df_second_jobs['Source'] = df_second_jobs['Source'].apply(lambda url: f'[{url}]({url})')
+filtered_data = df_second_jobs.dropna(subset=['Client/Organisation'])
+
+date = sorted([i for i in os.listdir('./pkl') if i != 'dict_constituencies.pkl'],reverse=True)[0]
+date_words = datetime.datetime.strftime(datetime.datetime.strptime(date,'%y%m%d'),'%d %B %Y')
 
 layout = html.Div([
     dcc.Markdown('''
@@ -24,22 +27,14 @@ layout = html.Div([
 
     ---
 
-    **Last updated: [12 December 2022](https://publications.parliament.uk/pa/cm/cmregmem/221212/contents.htm)**
+    **Last updated: ['''+date_words+'''](https://publications.parliament.uk/pa/cm/cmregmem/'''+date+'''/contents.htm)**
     ''',
     style = {'fontFamily':'Arial','fontSize':14}),
 
     html.Div([
-        html.Button("Download data (.csv)", id="btn_csv2"),
+        html.Button("Download historic data (.csv)", id="btn_csv2"),
         dcc.Download(id="download-dataframe-csv2")
     ]),
-    html.Br(),
-
-    dcc.Dropdown(
-        unique_register_dates,
-        'All dates',
-        searchable=True,
-        style = {'fontFamily':'Arial','fontSize':14},
-        id="jobs-breakdown-dropdown"),
     html.Br(),
 
     dash_table.DataTable(
@@ -125,20 +120,9 @@ layout = html.Div([
 ])
 
 @callback(
-    Output('jobs-breakdown-table','data'),
-    Input('jobs-breakdown-dropdown','value')
-)
-def update_rows(selected_value):
-    if selected_value == 'All dates':
-        dff = filtered_data.sort_values(['Register date','Name'], ascending=[False, True])
-    else:
-        dff = filtered_data[filtered_data['Register date'] == datetime.datetime.strptime(selected_value,"%d %B %Y").date()].sort_values('Name',ascending=True)
-    return dff.to_dict('records')
-
-@callback(
     Output("download-dataframe-csv2", "data"),
     Input("btn_csv2", "n_clicks"),
     prevent_initial_call=True,
 )
 def func(n_clicks):
-    return dcc.send_data_frame(filtered_data.to_csv, "mp_jobs_data_allyears.csv")
+    return dcc.send_data_frame(filtered_data_mega.to_csv, "mp_jobs_data_allyears.csv")

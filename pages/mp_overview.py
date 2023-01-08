@@ -1,16 +1,17 @@
-import datetime
+import datetime, os
 import pandas as pd
 import dash
-from dash import Dash, dash_table, html, dcc, Input, Output, callback
+from dash import dash_table, html, dcc, Input, Output, callback
 from dash.dash_table.Format import Format, Symbol, Trim, Scheme, Group
 
-dash.register_page(__name__, path='/', name='MP Overview', title='MP Second Jobs / Overview')
+dash.register_page(__name__, path='/', name='MP Overview', title="MP Second Jobs / Overview")
 
+df_mp_overview = pd.read_pickle('df_mp_overview.pkl')
 df_mp_overview_mega = pd.read_pickle('df_mp_overview_mega.pkl')
 
-unique_register_dates = sorted([i for i in df_mp_overview_mega['Register date'].unique().tolist()], reverse=True)
-unique_register_dates = [datetime.datetime.strftime(i,'%d %B %Y') for i in unique_register_dates]
-unique_register_dates.insert(0,'All dates')
+# unique_register_dates = sorted([i for i in df_mp_overview_mega['Register date'].unique().tolist()], reverse=True)
+# unique_register_dates = [datetime.datetime.strftime(i,'%d %B %Y') for i in unique_register_dates]
+# unique_register_dates.insert(0,'All dates')
 
 layout = html.Div([
     dcc.Markdown('''
@@ -44,16 +45,16 @@ layout = html.Div([
     ]),
     html.Br(),
 
-    dcc.Dropdown(
-        unique_register_dates,
-        'All dates',
-        searchable=True,
-        style = {'fontFamily':'Arial','fontSize':14},
-        id="mp-overview-dropdown"),
-    html.Br(),
+    # dcc.Dropdown(
+    #     unique_register_dates,
+    #     'All dates',
+    #     searchable=True,
+    #     style = {'fontFamily':'Arial','fontSize':14},
+    #     id="mp-overview-dropdown"),
+    # html.Br(),
 
     dash_table.DataTable(
-        data=df_mp_overview_mega.to_dict('records'),
+        data=df_mp_overview.to_dict('records'),
 
         columns = [
             {'name':'MP Name',
@@ -86,9 +87,9 @@ layout = html.Div([
             'id':'Country',
             'type':'text'},
 
-            {'name':'Register date',
-            'id':'Register date',
-            'type':'datetime'}
+            # {'name':'Register date',
+            # 'id':'Register date',
+            # 'type':'datetime'}
         ],
 
         css = [
@@ -121,9 +122,9 @@ layout = html.Div([
             {'if':{'column_id':'Country'},
                 'width':'100px',
                 },
-            {'if':{'column_id':'Register date'},
-                'width':'100px',
-                },    
+            # {'if':{'column_id':'Register date'},
+            #     'width':'100px',
+            #     },    
         ],
 
         style_header = {
@@ -149,16 +150,16 @@ layout = html.Div([
     )
 ])
 
-@callback(
-    Output('mp-overview-table','data'),
-    Input('mp-overview-dropdown','value')
-)
-def update_rows(selected_value):
-    if selected_value == 'All dates':
-        dff = df_mp_overview_mega.sort_values(['Register date','Name'], ascending=[False, True])
-    else:
-        dff = df_mp_overview_mega[df_mp_overview_mega['Register date'] == datetime.datetime.strptime(selected_value,"%d %B %Y").date()].sort_values('Name',ascending=True)
-    return dff.to_dict('records')
+# @callback(
+#     Output('mp-overview-table','data'),
+#     Input('mp-overview-dropdown','value')
+# )
+# def update_rows(selected_value):
+#     if selected_value == 'All dates':
+#         dff = df_mp_overview_mega.sort_values(['Register date','Name'], ascending=[False, True])
+#     else:
+#         dff = df_mp_overview_mega[df_mp_overview_mega['Register date'] == datetime.datetime.strptime(selected_value,"%d %B %Y").date()].sort_values('Name',ascending=True)
+#     return dff.to_dict('records')
 
 @callback(
     Output("download-dataframe-csv1", "data"),

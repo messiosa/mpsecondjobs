@@ -18,12 +18,15 @@ layout = html.Div([
         'fontSize':14}),
     
     html.Br(),
-    html.Img(
-        src='assets/bmc_qr.png',
-        style={
-            'height':'200px',
-            'width':'200px',
-            'margin':'0 auto',
-            'display':'block'
-        })
+    html.A(
+        html.Img(src='assets/bmc_qr.png',
+            style={
+                'height':'200px',
+                'width':'200px',
+                'margin':'0 auto',
+                'display':'block'
+            }),
+        href='https://www.buymeacoffee.com/mpsecondjobs',
+        target='_blank'
+    )
 ])

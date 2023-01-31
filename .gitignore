@@ -9,7 +9,7 @@ ner_models/
 pkl/
 ssl_cert/
 pages/happy_birthday.py
-README.md
+.old/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

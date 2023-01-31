@@ -26,11 +26,13 @@ layout = html.Div([
 
     **Navigating the site**
     
-    - On this page, you'll find a summary of **total earnings** and **total hours worked** year-to-date (YTD) for each current MP. You can also **filter** columns to narrow down the data (e.g., to a particular region or political party).
+    - On this page, you'll find a summary of **total earnings** and **total hours worked** year-to-date (YTD) for each current MP. 
+    
+    - You can **filter** columns to narrow down the data (e.g., to a particular region or political party) and **order** the data using the column header arrows.
     
     - On the [Jobs](/jobs) page, you'll find a more detailed breakdown of the earnings summarised here - including who MPs are working for and what they're doing.
 
-    - A new version of the Register is generally released every two weeks. The data below is for the most recent update to the Register - but you can download **historical data** using the **Download** button below.
+    - A new version of the Register is generally released every two weeks. The data below is for the most recent update to the Register - but you can download **historical data** using the **Download** button below (file size: ~4.5MB).
 
     - For more information about the codebase and methodology, see the [About](/about) page.
 

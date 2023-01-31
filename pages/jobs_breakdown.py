@@ -22,13 +22,15 @@ layout = html.Div([
     dcc.Markdown('''
     ### Jobs breakdown
 
+    - You can **filter** columns to narrow down the data (e.g., for a particular role or employer) and **order** the data using the column header arrows. 
+    
+    - Follow the **Source** link to read the original Register entry on [parliament.uk](https://www.parliament.uk/).
+
     - Each line in the table represents an entry into the Register.
 
     - Empty MP entries have been removed.
 
-    - Follow the **Source** link to read the original Register entry on [parliament.uk](https://www.parliament.uk/).
-
-    - A new version of the Register is generally released every two weeks. The data below is for the most recent update to the Register - but you can download **historical data** using the **Download** button below.
+    - A new version of the Register is generally released every two weeks. The data below is for the most recent update to the Register - but you can download **historical data** using the **Download** button below (file size: ~40MB).
     
     ---
 

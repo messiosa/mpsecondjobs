@@ -24,6 +24,7 @@ navbar = html.Div([
     className='navbar')
 
 app.layout = html.Div([
+    html.Link(rel='shortcut icon', href='assets/favicon.jpg'),
     navbar,
 	dash.page_container
 ])

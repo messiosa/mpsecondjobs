@@ -8,11 +8,11 @@ dash.register_page(__name__,path='/jobs',name='Jobs', title="MP Second Jobs / Jo
 df_second_jobs_mega= pd.read_pickle('df_second_jobs_mega.pkl')
 df_second_jobs_mega['Source'] = df_second_jobs_mega['Source'].apply(lambda url: f'[{url}]({url})')
 filtered_data_mega = df_second_jobs_mega.dropna(subset=['Client/Organisation'])
-
+filtered_data_mega.to_excel('test.xlsx')
 df_second_jobs = pd.read_pickle('df_second_jobs.pkl')
 df_second_jobs['Source'] = df_second_jobs['Source'].apply(lambda url: f'[{url}]({url})')
 filtered_data = df_second_jobs.dropna(subset=['Client/Organisation'])
-filtered_data.iloc[2].to_dict()
+
 # Get date and date_words
 with open('latest_scrape_date.txt','r') as f:
     date = f.read()
@@ -23,9 +23,13 @@ layout = html.Div([
     ### Jobs breakdown
 
     - Each line in the table represents an entry into the Register.
+
     - Empty MP entries have been removed.
+
     - Follow the **Source** link to read the original Register entry on [parliament.uk](https://www.parliament.uk/).
 
+    - A new version of the Register is generally released every two weeks. The data below is for the most recent update to the Register - but you can download **historical data** using the **Download** button below.
+    
     ---
 
     **Last updated: ['''+date_words+'''](https://publications.parliament.uk/pa/cm/cmregmem/'''+date+'''/contents.htm)**

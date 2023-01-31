@@ -89,6 +89,32 @@ class Scrape:
 
     """
 
+    def register_dates() -> None:
+        os.environ['PATH'] = Config.selenium_path
+
+        pages = ['https://publications.parliament.uk/pa/cm/cmregmem/contents2223.htm',
+                'https://publications.parliament.uk/pa/cm/cmregmem/contents2122.htm',
+                'https://publications.parliament.uk/pa/cm/cmregmem/contents1921.htm',
+                'https://publications.parliament.uk/pa/cm/cmregmem/contents1920.htm']
+
+        register_dates = []
+        for page in pages:
+            driver = webdriver.Edge(options=Config.selenium_options)
+            driver.get(page)
+
+            a_elements = driver.find_elements(By.TAG_NAME,'a')
+
+            for a in a_elements:
+                if a.text == 'HTML version':
+                    date = a.get_attribute('href').split('https://publications.parliament.uk/pa/cm/cmregmem/')[1].split('/contents.htm')[0]
+                    date_words = datetime.datetime.strftime(datetime.datetime.strptime(date,'%y%m%d'),'%d %B %Y')
+                    register_dates.append((date,date_words))
+
+        register_dates_file = open('./pkl/register_dates.pkl', 'wb')
+        pickle.dump(register_dates, register_dates_file)
+
+        return register_dates
+
     def constituencies() -> None: # Scrapes MP constituencies, works out regions and countries, and saves in pkl (dict_constituencies)
         os.environ['PATH'] = Config.selenium_path
 
@@ -348,21 +374,30 @@ class Scrape:
                         failed_urls.append((mpurl,e))
                 
                 # MANUAL ADD-INS
-                dict_other_info['mortimer_jill']['party'] = 'Conservative'
-                dict_other_info['mortimer_jill']['constituency'] = 'Hartlepool'
-                dict_other_info['mortimer_jill']['region'], dict_other_info['mortimer_jill']['country'] = dict_constituencies[dict_other_info['mortimer_jill']['constituency']]
-                
-                dict_other_info['wilson_sammy']['party'] = 'Democratic Unionist Party'
-                dict_other_info['wilson_sammy']['constituency'] = 'East Antrim'
-                dict_other_info['wilson_sammy']['region'], dict_other_info['wilson_sammy']['country'] = dict_constituencies[dict_other_info['wilson_sammy']['constituency']]
-
-                dict_other_info['leadbeater_kim']['party'] = 'Labour'
-                dict_other_info['leadbeater_kim']['constituency'] = 'Batley and Spen'
-                dict_other_info['leadbeater_kim']['region'], dict_other_info['leadbeater_kim']['country'] = dict_constituencies[dict_other_info['leadbeater_kim']['constituency']]
-
-                dict_other_info['green_sarah']['party'] = 'Liberal Democrat'
-                dict_other_info['green_sarah']['constituency'] = 'Chesham and Amersham'
-                dict_other_info['green_sarah']['region'], dict_other_info['green_sarah']['country'] = dict_constituencies[dict_other_info['green_sarah']['constituency']]
+                try:
+                    dict_other_info['mortimer_jill']['party'] = 'Conservative'
+                    dict_other_info['mortimer_jill']['constituency'] = 'Hartlepool'
+                    dict_other_info['mortimer_jill']['region'], dict_other_info['mortimer_jill']['country'] = dict_constituencies[dict_other_info['mortimer_jill']['constituency']]
+                except:
+                    pass
+                try:
+                    dict_other_info['wilson_sammy']['party'] = 'Democratic Unionist Party'
+                    dict_other_info['wilson_sammy']['constituency'] = 'East Antrim'
+                    dict_other_info['wilson_sammy']['region'], dict_other_info['wilson_sammy']['country'] = dict_constituencies[dict_other_info['wilson_sammy']['constituency']]
+                except:
+                    pass
+                try:
+                    dict_other_info['leadbeater_kim']['party'] = 'Labour'
+                    dict_other_info['leadbeater_kim']['constituency'] = 'Batley and Spen'
+                    dict_other_info['leadbeater_kim']['region'], dict_other_info['leadbeater_kim']['country'] = dict_constituencies[dict_other_info['leadbeater_kim']['constituency']]
+                except:
+                    pass
+                try:
+                    dict_other_info['green_sarah']['party'] = 'Liberal Democrat'
+                    dict_other_info['green_sarah']['constituency'] = 'Chesham and Amersham'
+                    dict_other_info['green_sarah']['region'], dict_other_info['green_sarah']['country'] = dict_constituencies[dict_other_info['green_sarah']['constituency']]
+                except:
+                    pass
 
                 # double-check everything was scraped correctly (sometimes it doesn't always pick everything up - maybe the connection dropped during scraping etc.)
                 for mpurl, other_info in dict_other_info.items():
@@ -493,11 +528,13 @@ class Extract:
             }
             if len(dict_line['money']) > 1:
                 total_money_ytd = 'MANUAL_CHECK'
+                print('#1')
             else:
                 try:
                     money_raw_value = float(''.join([i for i in dict_line['money'][0] if i.isdigit() is True or i == '.']))
                 except:
                     total_money_ytd = 'MANUAL_CHECK'
+                    print('#2')
                     return total_money_ytd
                 money_period = nlp_money(dict_line['money'][0]).ents[0].label_
 
@@ -520,6 +557,7 @@ class Extract:
                                 total_money_ytd = float(round(total_money_for_one_year*percentage_of_year_elapsed))
                         except:                                                       # if date_processor returns None's
                             total_money_ytd = 'MANUAL_CHECK'
+                            print('#3')
                 else:                                                                 # for recurring sums (i.e. D, W, 2W, M, Q, Y)
                     start_date_ytd, end_date_ytd = Extract.date_processor(dict_line)
                     total_money_for_one_year = money_raw_value*period_dict[money_period]
@@ -535,6 +573,7 @@ class Extract:
         try:
             if total_money_ytd > 500000:
                 total_money_ytd = 'MANUAL_CHECK'
+                print('#4')
             else:
                 pass
         except:
@@ -580,7 +619,7 @@ class Extract:
                 try:                                                                    # times given in days (e.g. '8 days per month') are recognised as 'DATE' ents by nlp_trf
                     time = [i for i in doc_time.ents if i.label_ == 'DATE'][0].text
                 except:                                     
-                    time = 'MANUAL_CHECK'
+                    time = float(0)
                     return time
 
             # REMOVE MISLEADING WORDS
@@ -756,17 +795,16 @@ class Extract:
                 dict_line['money'] = [ent.text for ent in doc.ents if ent.label_ == 'MONEY']
                 dict_line['time'] = [ent.text for ent in doc.ents if ent.label_ == 'TIME']
                 dict_line['role'] = [ent.text for ent in doc.ents if ent.label_ == 'ROLE']
-                #print(dict_line)
 
-                total_money_ytd = Extract.total_money_ytd(dict_line)
-                total_time_ytd = Extract.total_time_ytd(dict_line)
-                #print(total_money_ytd, total_time_ytd)
+                money_ytd = Extract.total_money_ytd(dict_line)
+                time_ytd = Extract.total_time_ytd(dict_line)
 
-                if 'total_money_ytd' == 'MANUAL_CHECK' or 'total_time_ytd' == 'MANUAL_CHECK':
-                    del dict_line['total_money_ytd']
-                    del dict_line['total_time_ytd']
+                if money_ytd == 'MANUAL_CHECK' or time_ytd == 'MANUAL_CHECK':
+                    print('money_ytd:',money_ytd)
+                    print('time_ytd:',time_ytd)
 
                     print('\n')
+                    print('MANUAL CHECK:')
                     print(dict_line['full_text'],'\n')
                     new_date = input('Enter correct date: ')
                     print('\n')
@@ -779,11 +817,13 @@ class Extract:
                     dict_line['money'] = [new_money]
                     dict_line['time'] = [new_time]
 
-                    total_money_ytd = Extract.total_money_ytd(dict_line)
-                    total_time_ytd = Extract.total_time_ytd(dict_line)
+                    money_ytd = Extract.total_money_ytd(dict_line)
+                    print('money_ytd:',money_ytd)
+                    time_ytd = Extract.total_time_ytd(dict_line)
+                    print('time_ytd:',time_ytd)
 
-                dict_line['total_money_ytd'] = float(total_money_ytd)
-                dict_line['total_time_ytd'] = float(total_time_ytd)
+                dict_line['total_money_ytd'] = float(money_ytd)
+                dict_line['total_time_ytd'] = float(time_ytd)
 
                 if indent == 'i':
                     i_fulltext = dict_line['full_text']
@@ -810,8 +850,9 @@ class Extract:
                 # finally, append dict_line to list_mpdata
                 parsed_lines_mp.append(dict_line)
             except Exception as e:
-                print(line,e)
-                pass
+                print('FAILED LINE: ')
+                print(line)
+                print(e,'\n')
         try:
             dict_parsed_lines_all = pickle.load(open('./pkl/'+date+'/dict_parsed_lines.pkl','rb'))
             dict_parsed_lines_all[mpurl] = parsed_lines_mp
@@ -829,7 +870,7 @@ class Extract:
 
         # main logic - if no mpurl is entered then all mpurls in dict_mpfi will be processed
         failed_urls = []
-        for mpurl, mpfi in tqdm(dict_mpfi.items(), desc='Extracting'):
+        for mpurl, mpfi in dict_mpfi.items():
             try:
                 Extract.parse_lines_mp(mpurl, category)
                 #print(mpurl,' SUCCESS')
@@ -1045,7 +1086,7 @@ class Export:
 
     def df_mega():
         # Create list of directory names (which will turn into dates)
-        dir_list = [i for i in os.listdir('./pkl') if i != 'dict_constituencies.pkl']
+        dir_list = [i for i in os.listdir('./pkl') if i not in ['dict_constituencies.pkl','register_dates.pkl']]
 
         # Create empty 'mega' dataframes which will incorporate data from all dates
         df_mp_overview_mega = pd.DataFrame({})
@@ -1062,7 +1103,6 @@ class Export:
         return df_mp_overview_mega, df_second_jobs_mega
 
 # exec
-
 if __name__ == "__main__":
     # variables
     print('loading dates...')
@@ -1103,6 +1143,11 @@ if __name__ == "__main__":
     df_mp_overview_mega, df_second_jobs_mega = Export.df_mega()
     df_mp_overview_mega.to_pickle('df_mp_overview_mega.pkl')
     df_second_jobs_mega.to_pickle('df_second_jobs_mega.pkl')
+    df_mp_overview, df_second_jobs = Export.df(date)
+    df_mp_overview.to_pickle('df_mp_overview.pkl')
+    df_second_jobs.to_pickle('df_second_jobs.pkl')
+    with open('latest_scrape_date.txt','w') as f:
+        f.write(date)
 
     print('\n','*********************************')
     print('failed_urls_links: ',failed_urls_links)

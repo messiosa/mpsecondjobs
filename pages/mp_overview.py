@@ -4,7 +4,7 @@ import dash
 from dash import dash_table, html, dcc, Input, Output, callback
 from dash.dash_table.Format import Format, Symbol, Trim, Scheme, Group
 
-dash.register_page(__name__, path='/', name='Summary', title="MP Second Jobs / Summary")
+dash.register_page(__name__, path='/', name='Summary', title="MP Second Jobs")
 
 df_mp_overview = pd.read_pickle('df_mp_overview.pkl')
 df_mp_overview_mega = pd.read_pickle('df_mp_overview_mega.pkl')
@@ -30,7 +30,7 @@ layout = html.Div([
     
     - On the [Jobs](/jobs) page, you'll find a more detailed breakdown of the earnings summarised here - including who MPs are working for and what they're doing.
 
-    - A new version of the Register is generally released every two weeks. The data below is for the most recent update to the Register - but you can download **historic data** using the **Download** button below.
+    - A new version of the Register is generally released every two weeks. The data below is for the most recent update to the Register - but you can download **historical data** using the **Download** button below.
 
     - For more information about the codebase and methodology, see the [About](/about) page.
 
@@ -42,7 +42,7 @@ layout = html.Div([
     style = {'fontFamily':'Arial','fontSize':14}),
 
     html.Div([
-        html.Button("Download historic data (.csv)", id="btn_csv1"),
+        html.Button("Download historical data (.csv)", id="btn_csv1"),
         dcc.Download(id="download-dataframe-csv1")
     ]),
     html.Br(),

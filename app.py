@@ -24,10 +24,9 @@ navbar = html.Div([
     className='navbar')
 
 app.layout = html.Div([
-    html.Link(rel='shortcut icon', href='assets/favicon.jpg'),
     navbar,
 	dash.page_container
 ])
 
-if __name__ == '__main__':
-	app.run_server(debug=True)
+if __name__ == "__main__":
+    app.run_server(debug=True)

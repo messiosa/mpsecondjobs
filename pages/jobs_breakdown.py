@@ -8,7 +8,7 @@ dash.register_page(__name__,path='/jobs',name='Jobs', title="MP Second Jobs / Jo
 df_second_jobs_mega= pd.read_pickle('df_second_jobs_mega.pkl')
 df_second_jobs_mega['Source'] = df_second_jobs_mega['Source'].apply(lambda url: f'[{url}]({url})')
 filtered_data_mega = df_second_jobs_mega.dropna(subset=['Client/Organisation'])
-filtered_data_mega.to_excel('test.xlsx')
+
 df_second_jobs = pd.read_pickle('df_second_jobs.pkl')
 df_second_jobs['Source'] = df_second_jobs['Source'].apply(lambda url: f'[{url}]({url})')
 filtered_data = df_second_jobs.dropna(subset=['Client/Organisation'])

@@ -8,6 +8,8 @@ excel/
 ner_models/
 pkl/
 ssl_cert/
+pages/happy_birthday.py
+README.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

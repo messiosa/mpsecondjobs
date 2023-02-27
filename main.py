@@ -21,7 +21,7 @@ class Config:
         -> e.g. {'c1':'1. Employment and earnings'}
     """ 
 
-    selenium_path = r"C:/selenium_drivers/edgedriver_win64_108"
+    selenium_path = r"C:/selenium_drivers/edgedriver_win64_110"
     selenium_options = Options()
     selenium_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36 Edg/101.0.1210.32")
     selenium_options.add_experimental_option('excludeSwitches', ['enable-logging'])
@@ -570,14 +570,14 @@ class Extract:
                     except:                                                          # if date_processor returns None's
                         total_money_ytd = float(0)
 
-        try:
-            if total_money_ytd > 500000:
-                total_money_ytd = 'MANUAL_CHECK'
-                print('#4')
-            else:
-                pass
-        except:
-            pass
+        # try:
+        #     if total_money_ytd > 500000:
+        #         total_money_ytd = 'MANUAL_CHECK'
+        #         print('#4')
+        #     else:
+        #         pass
+        # except:
+        #     pass
 
         return total_money_ytd         
     
